@@ -1,5 +1,14 @@
 import requests
+from clients.tesera import model
 import typing as tp
+
+
+class TeseraClientError(Exception):
+    pass
+
+
+class TeseraGameNotFoundError(Exception):
+    pass
 
 
 class DefaultTeseraClient:
@@ -14,10 +23,15 @@ class DefaultTeseraClient:
 
         return response.json()
 
-    def list_games(self):
-        return self._get(f"games")
-
-    def search_games(self, name: str):
-        return self._get("search/games", {
+    def find_game_by_name(self, name: str) -> model.BoardGameInfo:
+        data = self._get("search/games", {
             "query": name
         })
+
+        if not data:
+            raise TeseraGameNotFoundError(f"No such game with the name {name}")
+
+        alias = data[0]["alias"]
+        data = self._get(f"games/{alias}")
+
+        return model.BoardGameInfo(data["game"])

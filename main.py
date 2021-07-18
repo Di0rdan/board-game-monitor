@@ -3,6 +3,7 @@ import typing as tp
 
 import telegram.bot
 import telegram.ext
+from clients.tesera import api
 
 TOKEN = "1916132812:AAGLN-5c4Io_uXQOaRyy62SobDBD9zDC0zk"
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -49,7 +50,21 @@ def cmd_search(update: telegram.Update, context: telegram.ext.CallbackContext) -
         context.bot.send_message(chat_id=update.effective_chat.id, text="You must enter a valid name for a game!")
         return
 
-    context.bot.send_message(chat_id=update.effective_chat.id, text=f"You've entered: {message}")
+    try:
+        game = api.DefaultTeseraClient().find_game_by_name(message)
+    except api.TeseraGameNotFoundError:
+        context.bot.send_message(chat_id=update.effective_chat.id, text=f"Could not find the game in the database.")
+        return
+    response = f"""
+Игра {game.name}.
+Рейтинг: {game.rating}.
+Описание: {game.brief_description}
+Число игрков: {game.players_count}.
+Рекомендованное число игроков: {game.players_count_recommended}.
+Ссылка: {game.url}.
+    """
+    context.bot.send_message(chat_id=update.effective_chat.id, text=response)
+    context.bot.send_message(chat_id=update.effective_chat.id, text=game.description)
 
 
 def cmd_list(update: telegram.Update, context: telegram.ext.CallbackContext) -> None:

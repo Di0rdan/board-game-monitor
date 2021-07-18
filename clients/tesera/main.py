@@ -4,7 +4,7 @@ import pprint
 
 def main():
     client = api.DefaultTeseraClient()
-    pprint.pprint(client.search_games("Inis"))
+    pprint.pprint(client.find_game_by_name("Иниш").to_json())
 
 
 if __name__ == "__main__":
