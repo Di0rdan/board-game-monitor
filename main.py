@@ -1,4 +1,5 @@
 import logging
+import typing as tp
 
 import telegram.bot
 import telegram.ext
@@ -8,13 +9,33 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
                     level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+STORAGE = dict()
+
+
+def get_message_content(update: telegram.Update) -> tp.Optional[str]:
+    if not update.effective_message.text:
+        return None
+
+    tokens = update.effective_message.text.split()
+    content = " ".join(tokens[1:])
+
+    if not content:
+        return None
+
+    return content
+
 
 def cmd_start(update: telegram.Update, context: telegram.ext.CallbackContext) -> None:
     context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
 
 
 def cmd_add(update: telegram.Update, context: telegram.ext.CallbackContext) -> None:
-    context.bot.send_message(chat_id=update.effective_chat.id, text="The placeholder for add command!")
+    message = get_message_content(update)
+    if not message:
+        context.bot.send_message(chat_id=update.effective_chat.id, text="You must enter a valid name for a game!")
+        return
+    STORAGE[update.effective_user.id] = message
+    context.bot.send_message(chat_id=update.effective_chat.id, text=f"Added the game {message} to the database.")
 
 
 def cmd_clean(update: telegram.Update, context: telegram.ext.CallbackContext) -> None:
@@ -22,18 +43,13 @@ def cmd_clean(update: telegram.Update, context: telegram.ext.CallbackContext) ->
 
 
 def cmd_search(update: telegram.Update, context: telegram.ext.CallbackContext) -> None:
-    if not update.effective_message.text:
-        context.bot.send_message(chat_id=update.effective_chat.id, text="Could not parse your input!")
+    message = get_message_content(update)
+
+    if not message:
+        context.bot.send_message(chat_id=update.effective_chat.id, text="You must enter a valid name for a game!")
         return
 
-    tokens = update.effective_message.text.split()
-    request_name = " ".join(tokens[1:])
-
-    if not request_name:
-        context.bot.send_message(chat_id=update.effective_chat.id, text="You must enter the valid name of a game!")
-        return
-
-    context.bot.send_message(chat_id=update.effective_chat.id, text=f"You've entered: {request_name}")
+    context.bot.send_message(chat_id=update.effective_chat.id, text=f"You've entered: {message}")
 
 
 def cmd_list(update: telegram.Update, context: telegram.ext.CallbackContext) -> None:
@@ -41,20 +57,32 @@ def cmd_list(update: telegram.Update, context: telegram.ext.CallbackContext) -> 
 
 
 def cmd_delete(update: telegram.Update, context: telegram.ext.CallbackContext) -> None:
-    context.bot.send_message(chat_id=update.effective_chat.id, text="The placeholder for delete command!")
+    message = get_message_content(update)
+
+    if not message:
+        context.bot.send_message(chat_id=update.effective_chat.id, text="You must enter a valid name for a game!")
+        return
+
+    context.bot.send_message(chat_id=update.effective_chat.id, text=f"You've entered: {message}")
+    if update.effective_user.id in STORAGE:
+        del STORAGE[update.effective_user.id]
+        context.bot.send_message(chat_id=update.effective_chat.id, text=f"Deleted an entry for the game {message}.")
+    else:
+        context.bot.send_message(chat_id=update.effective_chat.id, text=f"Could not find such game in the database.")
 
 
 def main():
     updater = telegram.ext.Updater(TOKEN)
     dispatcher: telegram.ext.Dispatcher = updater.dispatcher
+    handlers = [
+        telegram.ext.CommandHandler('start', cmd_start),
+        telegram.ext.CommandHandler('add', cmd_add),
+        telegram.ext.CommandHandler('search', cmd_search),
+        telegram.ext.CommandHandler('delete', cmd_delete)
+    ]
 
-    start_handler = telegram.ext.CommandHandler('start', cmd_start)
-    add_handler = telegram.ext.CommandHandler('add', cmd_add)
-    search_handler = telegram.ext.CommandHandler('search', cmd_search)
-
-    dispatcher.add_handler(start_handler)
-    dispatcher.add_handler(add_handler)
-    dispatcher.add_handler(search_handler)
+    for handler in handlers:
+        dispatcher.add_handler(handler)
 
     updater.start_polling()
 
