@@ -25,14 +25,13 @@ class SearchHandle(base.BaseHandle):
             return
 
         response = message.MSG_GAME_DESCRIPTION.format(
-            game.title,
-            game.rating,
-            game.brief_description,
-            game.players_count,
-            game.players_count_recommended,
-            game.url
+            game.info.title,
+            game.info.rating,
+            game.info.brief_description,
+            game.info.players_count,
+            game.info.players_count_recommended,
+            game.info.url
         )
-
         context.bot.send_message(chat_id=update.effective_chat.id, text=response)
 
     @property
