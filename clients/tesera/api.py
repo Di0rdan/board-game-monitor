@@ -1,6 +1,11 @@
-import requests
-from clients.tesera import model
+import logging
 import typing as tp
+
+import requests
+
+from clients.tesera import model
+
+logger = logging.getLogger(__name__)
 
 
 class TeseraClientError(Exception):
@@ -32,9 +37,9 @@ class DefaultTeseraClient:
             "query": name
         })
 
-        if not data:
+        if not data or "alias" not in data[0]:
             raise TeseraGameNotFoundError(f"No such game with the name {name}")
-
+        logger.debug(data)
         alias = data[0]["alias"]
         return self.get_game_by_alias(alias)
 
