@@ -1,10 +1,10 @@
 import telegram.ext
 
-import bot
+from bot import base
 from bot.interface import message
 
 
-class StartHandle(bot.BaseHandle):
+class ListHandle(base.BaseHandle):
 
     def __init__(self):
         pass
@@ -14,4 +14,4 @@ class StartHandle(bot.BaseHandle):
 
     @property
     def cmd_name(self) -> str:
-        return "start"
+        return "list"

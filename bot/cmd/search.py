@@ -1,13 +1,12 @@
 import telegram.ext
 
-from bot import BaseHandle
+from bot import base, utils
+from bot.interface import message
 from clients.tesera import DefaultTeseraClient
 from clients.tesera import TeseraGameNotFoundError
-from .interface import message
-from .utils import utils
 
 
-class SearchHandle(BaseHandle):
+class SearchHandle(base.BaseHandle):
 
     def __init__(self):
         self._tesera_client = DefaultTeseraClient()

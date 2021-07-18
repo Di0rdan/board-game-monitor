@@ -2,12 +2,12 @@ import typing as tp
 
 import telegram.ext
 
-import bot
-from bot.interface import message
+from bot import base
 from bot import utils
+from bot.interface import message
 
 
-class DeleteHandle(bot.BaseHandle):
+class DeleteHandle(base.BaseHandle):
 
     def __init__(self):
         self._storage: tp.Dict[str, str] = dict()

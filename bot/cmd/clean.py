@@ -1,10 +1,10 @@
 import telegram.ext
 
-import bot
+from bot import base
 from bot.interface import message
 
 
-class CleanHandle(bot.BaseHandle):
+class CleanHandle(base.BaseHandle):
 
     def __init__(self):
         pass
