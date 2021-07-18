@@ -10,7 +10,7 @@ class HelpHandle(base.BaseHandle):
         pass
 
     def __call__(self, update: telegram.Update, context: telegram.ext.CallbackContext) -> None:
-        context.bot.send_message(chat_id=update.effective_chat.id, text=message.MSG_PLACEHOLDER)
+        context.bot.send_message(chat_id=update.effective_chat.id, text=message.MSG_HELP_LIST_COMMANDS)
 
     @property
     def cmd_name(self) -> str:

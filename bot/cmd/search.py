@@ -15,7 +15,7 @@ class SearchHandle(base.BaseHandle):
         msg = utils.get_message_content(update)
 
         if not msg:
-            context.bot.send_message(chat_id=update.effective_chat.id, text=message.MSG_GAME_INVALID_NAME)
+            context.bot.send_message(chat_id=update.effective_chat.id, text=message.MSG_GAME_NO_NAME_PASSED)
             return
 
         try:
@@ -25,7 +25,7 @@ class SearchHandle(base.BaseHandle):
             return
 
         response = message.MSG_GAME_DESCRIPTION.format(
-            game.name,
+            game.title,
             game.rating,
             game.brief_description,
             game.players_count,
