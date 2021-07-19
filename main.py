@@ -1,5 +1,5 @@
-import logging
 import configparser
+import logging
 
 import bot
 
