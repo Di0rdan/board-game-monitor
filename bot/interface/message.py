@@ -1,6 +1,7 @@
 MSG_GAME_NOT_FOUND = "Я не смог найти игру с таким названием :("
 MSG_GAME_ALREADY_ADDED_TO_DB = "Я уже отслеживаю эту игру!"
 MSG_NO_GAMES_TRACKED = "Сейчас я не отслеживаю игры"
+MSG_TRACKING_LIST_CLEANED = "Я перестал отслеживать все игры"
 MSG_GAME_ADDED_TO_DB = "Начал отслеживать игру \"{0}\""
 MSG_GAME_DELETED_FROM_DB = "Перестал отслеживать игру \"{0}\""
 MSG_PLACEHOLDER = "Извини, эта команда пока что не реализована"

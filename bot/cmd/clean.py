@@ -1,6 +1,6 @@
 import telegram.ext
 
-from bot import base
+from bot import base, constants
 from bot.interface import message
 
 
@@ -10,7 +10,12 @@ class CleanHandle(base.BaseHandle):
         pass
 
     def __call__(self, update: telegram.Update, context: telegram.ext.CallbackContext) -> None:
-        context.bot.send_message(chat_id=update.effective_chat.id, text=message.MSG_PLACEHOLDER)
+        if constants.DB_NAME not in context.user_data or not context.user_data[constants.DB_NAME]:
+            context.bot.send_message(chat_id=update.effective_chat.id, text=message.MSG_NO_GAMES_TRACKED)
+            return
+
+        context.user_data[constants.DB_NAME].clear()
+        context.bot.send_message(chat_id=update.effective_chat.id, text=message.MSG_TRACKING_LIST_CLEANED)
 
     @property
     def cmd_name(self) -> str:
