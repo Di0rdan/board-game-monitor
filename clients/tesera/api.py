@@ -43,7 +43,7 @@ class DefaultTeseraClient:
         alias = data[0]["alias"]
         return self.get_game_by_alias(alias)
 
-    def generate_recommendation(self, names: tp.Iterable[str]) -> tp.Iterable[model.BoardGame]:
+    def generate_recommendation(self, names: tp.Iterable[str]) -> tp.List[model.BoardGame]:
         games = list()
         similar_games = list()
 
