@@ -1,8 +1,10 @@
 import telegram.ext
 
-from bot import base, cmd, utils
+from bot import base, cmd, utils, constants
 
-__all__ = ["base", "cmd", "TelegramBot", "utils"]
+__all__ = ["base", "cmd", "TelegramBot", "utils", "constants"]
+
+DB_NAME = "db"
 
 
 class TelegramBot:

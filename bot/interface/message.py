@@ -1,12 +1,18 @@
 MSG_GAME_NOT_FOUND = "Я не смог найти игру с таким названием :("
-MSG_GAME_ADDED_TO_DB = "Добавил игру \"{0}\" в свою базу данных"
-MSG_GAME_DELETED_FROM_DB = "Удалил игру \"{0}\" из своей базы данных"
+MSG_GAME_ALREADY_ADDED_TO_DB = "Я уже отслеживаю эту игру!"
+MSG_NO_GAMES_TRACKED = "Сейчас я не отслеживаю игры"
+MSG_GAME_ADDED_TO_DB = "Начал отслеживать игру \"{0}\""
+MSG_GAME_DELETED_FROM_DB = "Перестал отслеживать игру \"{0}\""
 MSG_PLACEHOLDER = "Извини, эта команда пока что не реализована"
 MSG_GAME_INVALID_NAME = "Пожалуйста, введи корректное название игры"
 MSG_GAME_NO_NAME_PASSED = "Хм, мне кажется, что ты забыл написать название игры"
 MSG_GAME_RECOMMENDATION_NOT_GENERATED = "Я не могу подобрать похожие игры"
 MSG_GAME_AWAITING_USER_INPUT = "Перечисли игры, по которым я должен сделать рекомендацию, через запятую"
 MSG_FOUND_N_GAMES = "Нашел {0} игр"
+MSG_LIST_TRACKING_GAMES = """
+Я отслеживаю следующие игры (всего: {0}):
+{1}
+"""
 MSG_GAME_DESCRIPTION = """
 {0}
 
